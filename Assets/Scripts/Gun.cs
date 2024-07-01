@@ -10,9 +10,11 @@ public class Gun : MonoBehaviour
     public GameObject autoBullet;
     public GameObject normalBullet;
 
+    //Already Added
     public bool autoDuck;
-
     public bool canAutoFire;
+
+
     public int numOfDucks;
     [HideInInspector]
     public float fireCounter;
