@@ -8,9 +8,6 @@ public class upgradeMenu : MonoBehaviour
     public float fireRate;
     public float fireRange;
 
-    public float fireRangeLevel;
-    public float maxFireRangeLevel;
-
     public MoneyManager mm;
     public GameManager gm;
     public gunStats gs;

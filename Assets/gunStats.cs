@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class gunStats : MonoBehaviour
 {
+    [Header("Starting Stats")]
+    public float sFireRate;
+    public float sFireRange;
+
     [Header("Pistol Stats")]
     public float minFireRate;
     public float maxFireRate;
@@ -11,6 +15,14 @@ public class gunStats : MonoBehaviour
     public float maxFireRange;
     public bool autoFire;
     public bool doubleShot;
+
+
+
+    void Start()
+    {
+        PlayerPrefs.SetFloat("fireRate", sFireRate);
+        PlayerPrefs.SetFloat("fireRange", sFireRange);
+    }
 
     public bool decreaseFireRate(GameObject gun)
     {

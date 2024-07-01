@@ -7,6 +7,10 @@ public class Gun : MonoBehaviour
     // Start is called before the first frame update
 
     public GameObject bullet;
+    public GameObject autoBullet;
+    public GameObject normalBullet;
+
+    public bool autoDuck;
 
     public bool canAutoFire;
     public int numOfDucks;
@@ -16,6 +20,20 @@ public class Gun : MonoBehaviour
     public Transform firePoint, firePoint2;
     private Rigidbody rb;
     public float zoomAmount;
+
+    void Start()
+    {
+        if (autoDuck)
+        {
+            Debug.Log("auto bullet");
+            bullet = autoBullet;
+        }
+        else
+        {
+            Debug.Log("normal bullet");
+            bullet = normalBullet;
+        }
+    }
 
     // Update is called once per frame
     void Update()
