@@ -13,7 +13,6 @@ public class spawner : MonoBehaviour
     public GameObject duck;
 
     private Rigidbody rb;
-    // Update is called once per frame
 
     void Start()
     {
