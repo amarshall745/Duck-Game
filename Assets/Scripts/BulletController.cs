@@ -35,7 +35,7 @@ public class BulletController : MonoBehaviour
 
         if (layerMask == 6)
         {
-            Debug.Log("BOOM");
+            //Debug.Log("BOOM");
             Destroy(other.gameObject);
             Instantiate(impactEffect, transform.position + (transform.forward * (-moveSpeed * Time.deltaTime)), transform.rotation);
             if (selfDestroy)
