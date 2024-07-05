@@ -33,7 +33,7 @@ public class autoTurret : MonoBehaviour
         {
             if (Physics.Raycast(origin, direction, out hit, distance, layerMask))
             {
-                Debug.Log("Hit " + hit.collider.name);
+              //  Debug.Log("Hit " + hit.collider.name);
 
                 hitPoint = hit.point;
 

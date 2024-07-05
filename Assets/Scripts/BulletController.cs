@@ -9,43 +9,52 @@ public class BulletController : MonoBehaviour
     public Rigidbody rb;
 
     public GameObject impactEffect;
+    public bool selfDestroy;
 
-    public int damage = 1;
-
-    public bool damageEnemy, damagePlayer;
-    // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log(gameObject + "HI");
-    }
+    private bool canCountdown = false;
 
     // Update is called once per frame
     void Update()
     {
         //theRB.velocity = transform.forward * moveSpeed;
 
-        lifeTime -= Time.deltaTime;
-
-        if (lifeTime <= 0)
+        if (canCountdown)
         {
-            Destroy(gameObject);
-        }
+            lifeTime -= Time.deltaTime;
 
-         rb.velocity = gameObject.transform.forward * 10;
-        
+            if (lifeTime <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy" && damageEnemy)
+        int layerMask = other.gameObject.layer;
+
+        if (layerMask == 6)
         {
-            //Destroy(other.gameObject);
-            //other.gameObject.GetComponent<EnemyHealthController>().DamageEnemy(damage);
+            Debug.Log("BOOM");
+            Destroy(other.gameObject);
+            Instantiate(impactEffect, transform.position + (transform.forward * (-moveSpeed * Time.deltaTime)), transform.rotation);
+            if (selfDestroy)
+            {
+                Destroy(gameObject);
+            }
         }
+        else
+        {
+            if (selfDestroy)
+            {
+                Instantiate(impactEffect, transform.position + (transform.forward * (-moveSpeed * Time.deltaTime)), transform.rotation);
+                Destroy(gameObject);
+            }
+        }
+    }
 
-
-
-        Destroy(gameObject);
-        Instantiate(impactEffect, transform.position + (transform.forward * (-moveSpeed * Time.deltaTime)), transform.rotation);
+    public void Countdown()
+    {
+        canCountdown = true;
     }
 }
