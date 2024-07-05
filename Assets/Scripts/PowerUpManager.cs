@@ -6,6 +6,10 @@ using System.Reflection;
 public class PowerUpManager : MonoBehaviour
 {
 
+ 
+
+
+
     //=============================================================
     //================= common - COMMON - common  =================
     //=============================================================
@@ -13,11 +17,13 @@ public class PowerUpManager : MonoBehaviour
     public int RapidFireEffect()
     {
         Debug.Log("============ RapidFire activated");
+        PlayerPrefs.SetInt("autoFire", 1);
         return 10;
     }
 
     public int DoubleShotEffect()
     {
+        PlayerPrefs.SetInt("doubleShot", 1);
         Debug.Log("============ DoubleShot activated");
         return 10;
     }
@@ -32,7 +38,7 @@ public class PowerUpManager : MonoBehaviour
     {
         Debug.Log("============ ExtraAmmo activated");
         return 10;
-    }
+    }   
 
     public int GrenadeEffect()
     {

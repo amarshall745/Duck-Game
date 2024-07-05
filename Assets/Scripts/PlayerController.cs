@@ -32,6 +32,11 @@ public class PlayerController : MonoBehaviour
     //private GameManager gm = GameManager.instance;
     public Gun activeGun;
 
+    //Scripts
+    private LevelLoadUp levelLoadUp;
+    private PowerUpManager powerUpManager;
+
+
     private void Awake()
     {
         instance = this;
@@ -39,6 +44,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         gunStartPosition = gunHolder.localPosition;
+
     }
 
     void Update()
@@ -169,6 +175,11 @@ public class PlayerController : MonoBehaviour
             {
                 CameraController.instance.ZoomOut();
             }
+
+            if (Input.GetKeyDown("1"))
+            {
+                Ability1();
+            }
         }
 
         if (Input.GetKeyDown("e"))
@@ -185,6 +196,16 @@ public class PlayerController : MonoBehaviour
         activeGun.fireCounter = PlayerPrefs.GetFloat("fireRate");
     }
 
+    public void Ability1()
+    {
+        levelLoadUp = FindObjectOfType<LevelLoadUp>();
+        powerUpManager = FindObjectOfType<PowerUpManager>();
+
+        Debug.Log("Common PowerUp Int (Public Variable): " + levelLoadUp.commonPowerUpString);
+        powerUpManager.ActivatePowerUpEffect(levelLoadUp.commonPowerUpString);
+
+    }
+
 }
 
-        
+  

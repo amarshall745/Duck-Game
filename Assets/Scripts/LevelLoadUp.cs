@@ -4,24 +4,55 @@ using UnityEngine;
 
 public class LevelLoadUp : MonoBehaviour
 {
-    public string[] commonPowerUps = new string[]{ "RapidFire", "DoubleShot", "DoubleJump", "ExtraAmmo", "Grenade" };
-    public string[] rarePowerUps = new string[] { "TurretDuck", "JetPack", "RocketLauncher", "AutoLock", "TempUnlimited", "Attacks" };
-    public string[] epicPowerUps = new string[] { "Nuke", "DuckTank", "DuckTornado", "AirStrike", "BlackHole", "Teleport", "Drone" };
-    
+    //These stats will be moved to a diffrent script soon :O
+    //Common stats - I can probably remove the "string commonPowerUpString;" just need to re-write code
     public int commonPowerUpInt;
     public string commonPowerUpString;
+    public string[] commonPowerUpsName = new string[] { "RapidFire", "DoubleShot", "DoubleJump", "ExtraAmmo", "Grenade"};
+    public string[] commonPowerUpsDescription = new string[] { 
+        "RapidFire: **Insert Description Here**",
+        "DoubleShot: **Insert Description Here**",
+        "DoubleJump: **Insert Description Here**",
+        "ExtraAmmo: **Insert Description Here**",
+        "Grenade: **Insert Description Here**"};
+    public int[] commonPowerUpsDuration = new int[] { 10, 9, 2, 4, 7 };
+    public int[] commonPowerUpsCoolDown = new int[] { 15, 12, 6, 9, 12 };
+    //shop stats
+    public int[] commonPowerUplBaseCost = new int[] { 15, 12, 6, 9, 12 };
+    public int[] commonPowerUpsLevel = new int[] { 15, 12, 6, 9, 12 };  //NEEDS TO BE A PLAYER PREFF
+    //upgrades
+    public string[] commonPowerUpsLevel2 = new string[] {
+        "RapidFire: **Insert Description Here**",
+        "DoubleShot: **Insert Description Here**",
+        "DoubleJump: **Insert Description Here**",
+        "ExtraAmmo: **Insert Description Here**",
+        "Grenade: **Insert Description Here**"};
+
+    public int[] commonPowerUpsDescriptionLevel2 = new int[] { 15, 12, 6, 9, 12 };
+
+
+
+    //Rare & epic stats - not functional ATM :O
+    public string[] rarePowerUps = new string[] { "TurretDuck", "JetPack", "RocketLauncher", "AutoLock", "TempUnlimited", "Attacks" };
+    public string[] epicPowerUps = new string[] { "Nuke", "DuckTank", "DuckTornado", "AirStrike", "BlackHole", "Teleport", "Drone" };
+    public int rarePowerUpInt;
+    public string rarePowerUpString;
+    public int epicPowerUpInt;
+    public string epicPowerUpString;
+
+
+    private int[] selectedPowerUpIndices = new int[3];
+    private bool waitingForInput = false;
 
     private PowerUpManager powerUpManager;
-    private bool waitingForInput = false;
 
     void Start()
     {
         powerUpManager = GetComponent<PowerUpManager>();
 
-        // Starting the Load Up Stuffz
-        Debug.Log("     ========== WELCOME TO THE LOAD UP METHOD ==========\nCommon Power Up: RapidFire, DoubleShot, Ability1, Ability2, Ability3");
-        InitializeRandomPowerUp();
-        Debug.Log("Press Y to confirm or U to re-roll\nCurrent Power-Up: " + commonPowerUpString);
+        // Starting the Load Up Stuff
+        Debug.Log("========== WELCOME TO THE LOAD UP METHOD ==========\nCommon Power Up: RapidFire, DoubleShot, Ability1, Ability2, Ability3");
+        InitializeRandomPowerUps();
         waitingForInput = true;
     }
 
@@ -29,31 +60,56 @@ public class LevelLoadUp : MonoBehaviour
     {
         if (waitingForInput)
         {
-            if (Input.GetKeyDown(KeyCode.Y))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                Debug.Log("Power-Up Confirmed: " + commonPowerUpString);
-                waitingForInput = false;
-
-                // Continue with the game logic here
-                string powerUpWithEffect = AddEffect(commonPowerUpString);
-                Debug.Log("Selected Power-Up with Effect: " + powerUpWithEffect);
-                powerUpManager.ActivatePowerUpEffect(powerUpWithEffect);
+                commonPowerUpInt = selectedPowerUpIndices[0];
+                ConfirmPowerUp(commonPowerUpInt);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                commonPowerUpInt = selectedPowerUpIndices[1];
+                ConfirmPowerUp(commonPowerUpInt);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                commonPowerUpInt = selectedPowerUpIndices[2];
+                ConfirmPowerUp(commonPowerUpInt);
             }
             else if (Input.GetKeyDown(KeyCode.U))
             {
                 Debug.Log("Re-rolling Power-Up");
-                InitializeRandomPowerUp();
-                Debug.Log("Press Y to confirm or U to re-roll\nCurrent Power-Up: " + commonPowerUpString);
+                InitializeRandomPowerUps();
                 waitingForInput = true;
             }
         }
     }
 
-    void InitializeRandomPowerUp()
+    void InitializeRandomPowerUps()
     {
-        commonPowerUpInt = Random.Range(0, commonPowerUps.Length);
-        commonPowerUpString = commonPowerUps[commonPowerUpInt];
-        Debug.Log("Initialized Power-Up: " + commonPowerUpString + " at index " + commonPowerUpInt);
+        List<int> indices = new List<int>();
+        while (indices.Count < 3)
+        {
+            int index = Random.Range(0, commonPowerUpsName.Length);
+            if (!indices.Contains(index))
+            {
+                indices.Add(index);
+            }
+        }
+
+        selectedPowerUpIndices[0] = indices[0];
+        selectedPowerUpIndices[1] = indices[1];
+        selectedPowerUpIndices[2] = indices[2];
+
+        Debug.Log("Choose a Power-Up: \n1: " + commonPowerUpsName[selectedPowerUpIndices[0]] + "\t2: " + commonPowerUpsName[selectedPowerUpIndices[1]] + "\t3: " + commonPowerUpsName[selectedPowerUpIndices[2]] + "\t\tPress U to re-roll");
+    }
+
+    void ConfirmPowerUp(int i)
+    {
+        commonPowerUpString = commonPowerUpsName[i];
+        Debug.Log("Power-Up Confirmed: " + commonPowerUpString);
+        waitingForInput = false;
+        commonPowerUpString = AddEffect(commonPowerUpString);
+        // Continue with the game logic here
     }
 
     string AddEffect(string powerUpName)

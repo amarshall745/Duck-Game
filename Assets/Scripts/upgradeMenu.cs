@@ -14,8 +14,8 @@ public class upgradeMenu : MonoBehaviour
     public PlayerController pc;
 
     void Start()
-    { 
-
+    {
+        
     }
 
     public void updae()
