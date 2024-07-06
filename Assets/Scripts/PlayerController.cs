@@ -17,12 +17,12 @@ public class PlayerController : MonoBehaviour
     public bool invertX;
     public bool invertY;
 
-
     private bool canJump, canDoubleJump;
     public Transform groundCheckPoint;
     public LayerMask whatIsGround;
 
-    
+    public GameObject camera;
+
     //public GameObject bullet;
     public Transform firePoint;
 
@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     public float adsSpeed = 2f;
     //private GameManager gm = GameManager.instance;
     public Gun activeGun;
+
+    public bool canShoot = true;
 
     private void Awake()
     {
@@ -121,60 +123,64 @@ public class PlayerController : MonoBehaviour
 
             //Handle Shooting
             //single shots
-            if (Input.GetMouseButtonDown(0) && activeGun.fireCounter <= 0)
+            if (canShoot)
             {
 
-                RaycastHit hit;
-                if (Physics.Raycast(camTrans.position, camTrans.forward, out hit, 50f))
+                if (Input.GetMouseButtonDown(0) && activeGun.fireCounter <= 0)
                 {
-                    if (Vector3.Distance(camTrans.position, hit.point) > 2f)
+
+                    RaycastHit hit;
+                    if (Physics.Raycast(camTrans.position, camTrans.forward, out hit, 50f))
                     {
-                        firePoint.LookAt(hit.point);
+                        if (Vector3.Distance(camTrans.position, hit.point) > 2f)
+                        {
+                            firePoint.LookAt(hit.point);
+                        }
+
+                    }
+                    else
+                    {
+                        firePoint.LookAt(camTrans.position + (camTrans.forward * 30f));
                     }
 
+                    //Instantiate(bullet, firePoint.position, firePoint.rotation);
+                    FireShot();
+                }
+
+                //repeating shots
+                if (Input.GetMouseButton(0) && PlayerPrefs.GetInt("autoFire") == 1)
+                {
+                    if (activeGun.fireCounter <= 0)
+                    {
+                        FireShot();
+                    }
+                }
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    CameraController.instance.ZoomIn(activeGun.zoomAmount);
+                }
+
+                if (Input.GetMouseButton(1))
+                {
+                    gunHolder.position = Vector3.MoveTowards(gunHolder.position, adsPoint.position, adsSpeed * Time.deltaTime);
                 }
                 else
                 {
-                    firePoint.LookAt(camTrans.position + (camTrans.forward * 30f));
+                    gunHolder.localPosition = Vector3.MoveTowards(gunHolder.localPosition, gunStartPosition, adsSpeed * Time.deltaTime);
                 }
 
-                //Instantiate(bullet, firePoint.position, firePoint.rotation);
-                FireShot();
-            }
-
-            //repeating shots
-            if (Input.GetMouseButton(0) && PlayerPrefs.GetInt("autoFire") == 1)
-            {
-                if (activeGun.fireCounter <= 0)
+                if (Input.GetMouseButtonUp(1))
                 {
-                    FireShot();
+                    CameraController.instance.ZoomOut();
                 }
-            }
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                CameraController.instance.ZoomIn(activeGun.zoomAmount);
-            }
-
-            if (Input.GetMouseButton(1))
-            {
-                gunHolder.position = Vector3.MoveTowards(gunHolder.position, adsPoint.position, adsSpeed * Time.deltaTime);
-            }
-            else
-            {
-                gunHolder.localPosition = Vector3.MoveTowards(gunHolder.localPosition, gunStartPosition, adsSpeed * Time.deltaTime);
-            }
-
-            if (Input.GetMouseButtonUp(1))
-            {
-                CameraController.instance.ZoomOut();
             }
         }
 
-        if (Input.GetKeyDown("e"))
-            {
-                GameManager.instance.upgradeMenuOn();
-            }
+        if (Input.GetKeyDown("q"))
+        {
+            GameManager.instance.upgradeMenuOn();
+        }
 
     }
 
@@ -183,6 +189,15 @@ public class PlayerController : MonoBehaviour
         //Instantiate(activeGun.bullet, firePoint.position, firePoint.rotation);
         activeGun.GetComponent<Gun>().shoot();
         activeGun.fireCounter = PlayerPrefs.GetFloat("fireRate");
+    }
+
+    public void onTurret()
+    {
+        canShoot = false;
+        canJump = false;
+        charCon.enabled = false;
+        GetComponent<raycastController>().enabled = false;
+        activeGun.gameObject.SetActive(false);
     }
 
 }
