@@ -200,6 +200,15 @@ public class PlayerController : MonoBehaviour
         activeGun.gameObject.SetActive(false);
     }
 
+    public void offTurret()
+    {
+        canShoot = true;
+        canJump = true;
+        charCon.enabled = true;
+        GetComponent<raycastController>().enabled = true;
+        activeGun.gameObject.SetActive(true);
+    }
+
 }
 
         

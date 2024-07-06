@@ -5,19 +5,22 @@ using UnityEngine;
 public class controllableTurret : MonoBehaviour
 {
     private Vector3 playerLocation;
-    private Transform childTransform;
-    public Transform barrelTransform;
-    private Vector3 childPosition;
+    private Transform seatTransform;
+    private Vector3 seatPosition;
+    private Transform barrelTransform;
+    private GameObject player;
 
+    public bool autoFire;
+    public int numberOfShots;
     public float fireCounter;
     public float fireRate;
     public float fireSpeed;
     public Transform firePoint;
 
     private Rigidbody rb;
-    public GameObject bullet;
+    private GameObject bullet;
 
-    private bool mounted;
+    private bool mounted = false;
 
     void Start()
     {
@@ -33,22 +36,38 @@ public class controllableTurret : MonoBehaviour
                 fireCounter -= Time.deltaTime;
             }
 
-            if (Input.GetMouseButtonDown(0) && fireCounter <= 0)
+            if (Input.GetMouseButtonDown(0) && fireCounter <= 0 && numberOfShots > 0)
             {
                 fire(Instantiate(bullet, firePoint.position, firePoint.rotation));
                 fireCounter = fireRate;
             }
+
+            if (Input.GetMouseButton(0) && autoFire && numberOfShots > 0)
+            {
+                if (fireCounter <= 0)
+                {
+                    fire(Instantiate(bullet, firePoint.position, firePoint.rotation));
+                    fireCounter = fireRate;
+                }
+            }
+
+            if (Input.GetKeyDown("e"))
+            {
+                unmount();
+            }
         }
     }
 
-    public void mount(GameObject player)
+    public void mount(GameObject playerGO)
     {
+        player = playerGO;
+
         Debug.Log("Mount turret" + player);
         playerLocation = player.transform.position;
-        childTransform = transform.Find("seat");
-        childPosition = childTransform.position;
+        seatTransform = transform.Find("seat");
+        seatPosition = seatTransform.position;
         player.GetComponent<PlayerController>().onTurret();
-        player.transform.position = childPosition;
+        player.transform.position = seatPosition;
 
         transform.parent = player.transform;
         transform.localRotation = Quaternion.identity;
@@ -61,8 +80,21 @@ public class controllableTurret : MonoBehaviour
 
     }
 
+    public void unmount()
+    {
+        Debug.Log("Unmount");
+        mounted = false;
+
+        barrelTransform.SetParent(gameObject.transform);
+        gameObject.transform.SetParent(null);
+
+        player.transform.position = playerLocation;
+        player.GetComponent<PlayerController>().offTurret();
+    }
+
     void fire(GameObject go)
     {
+        numberOfShots--;
         rb = go.GetComponent<Rigidbody>();
         go.GetComponent<BulletController>().Countdown();
         rb.velocity = go.transform.forward * fireSpeed;
