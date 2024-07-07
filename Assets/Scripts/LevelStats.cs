@@ -19,10 +19,11 @@ using UnityEngine;
 /// </summary>
 public class LevelStats : MonoBehaviour
 {
-
+    
     void Start()
     {
-        
+        PlayerPrefs.SetInt("autoFire", 0);
+        PlayerPrefs.SetInt("doubleShot", 0);
     }
 
 

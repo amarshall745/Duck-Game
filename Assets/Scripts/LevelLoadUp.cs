@@ -9,6 +9,7 @@ public class LevelLoadUp : MonoBehaviour
     public int commonPowerUpInt;
     public string commonPowerUpString;
     public string[] commonPowerUpsName = new string[] { "RapidFire", "DoubleShot", "DoubleJump", "ExtraAmmo", "Grenade"};
+    public int[] commonPowerUpLevel = new int[] { 1, 1, 1, 1, 1 };  //NEEDS TO BE A PLAYER PREFF
     public string[] commonPowerUpsDescription = new string[] { 
         "RapidFire: **Insert Description Here**",
         "DoubleShot: **Insert Description Here**",
@@ -19,14 +20,13 @@ public class LevelLoadUp : MonoBehaviour
     public int[] commonPowerUpsCoolDown = new int[] { 15, 12, 6, 9, 12 };
     //shop stats
     public int[] commonPowerUplBaseCost = new int[] { 15, 12, 6, 9, 12 };
-    public int[] commonPowerUpsLevel = new int[] { 15, 12, 6, 9, 12 };  //NEEDS TO BE A PLAYER PREFF
     //upgrades
     public string[] commonPowerUpsLevel2 = new string[] {
-        "RapidFire: **Insert Description Here**",
-        "DoubleShot: **Insert Description Here**",
-        "DoubleJump: **Insert Description Here**",
-        "ExtraAmmo: **Insert Description Here**",
-        "Grenade: **Insert Description Here**"};
+        "RapidFire: **Insert Upgrade Description Here**",
+        "DoubleShot: **Insert Upgrade Description Here**",
+        "DoubleJump: **Insert Upgrade Description Here**",
+        "ExtraAmmo: **Insert Upgrade Description Here**",
+        "Grenade: **Insert Upgrade Description Here**"};
 
     public int[] commonPowerUpsDescriptionLevel2 = new int[] { 15, 12, 6, 9, 12 };
 
@@ -51,7 +51,7 @@ public class LevelLoadUp : MonoBehaviour
         powerUpManager = GetComponent<PowerUpManager>();
 
         // Starting the Load Up Stuff
-        Debug.Log("========== WELCOME TO THE LOAD UP METHOD ==========\nCommon Power Up: RapidFire, DoubleShot, Ability1, Ability2, Ability3");
+        Debug.Log("========== WELCOME TO THE LOAD UP METHOD ==========\nCommon Power Up: RapidFire, DoubleJump, ExtraAmmo, Grenade");
         InitializeRandomPowerUps();
         waitingForInput = true;
     }
