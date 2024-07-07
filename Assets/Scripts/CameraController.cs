@@ -33,7 +33,6 @@ public class CameraController : MonoBehaviour
         transform.rotation = target.rotation;
 
         theCam.fieldOfView = Mathf.Lerp(theCam.fieldOfView, targetFOV, zoomSpeed * Time.deltaTime);
-
     }
 
     public void ZoomIn(float newZoom)
