@@ -5,10 +5,13 @@ using UnityEngine;
 public class raycastController : MonoBehaviour
 {
     public Transform gizmoPoint;
-    public float eRange;
+    public float eRange, placeRange;
 
     private GameObject hitGO;
     private Vector3 hitPoint = Vector3.zero;
+
+    public GameObject spawnerGO, turretGO;
+    public bool spawner, turret;
     // Update is called once per frame
     void Update()
     {
@@ -31,6 +34,24 @@ public class raycastController : MonoBehaviour
                     }
                 }
             }
+
+
+            if (Input.GetKeyDown("2"))
+            {
+                if (distance <= placeRange)
+                {
+                    if (spawner)
+                    {
+                        Instantiate(spawnerGO, hitPoint + new Vector3(0f, 1.5f, 0f), Quaternion.identity);
+                    }
+
+                    if (turret)
+                    {
+                        Instantiate(turretGO, hitPoint + new Vector3(0f, 0.5f, 0f), Quaternion.identity);
+                    }
+                }
+            }
+
         }
     }
 
