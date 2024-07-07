@@ -6,14 +6,14 @@ public class Gun : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public GameObject bullet;
+    private GameObject bullet;
     public GameObject autoBullet;
     public GameObject normalBullet;
-
-    //Already Added
+    public GameObject rocketBullet;
+    
     public bool autoDuck;
     public bool canAutoFire;
-
+    public bool rocket;
 
     public int numOfDucks;
     [HideInInspector]
@@ -34,6 +34,11 @@ public class Gun : MonoBehaviour
         {
             Debug.Log("normal bullet");
             bullet = normalBullet;
+        }
+
+        if (rocket)
+        {
+            bullet = rocketBullet;
         }
     }
 

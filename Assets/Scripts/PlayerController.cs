@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public bool invertY;
 
     private bool canJump, canDoubleJump;
+    public bool doubleJump;
     public Transform groundCheckPoint;
     public LayerMask whatIsGround;
 
@@ -80,10 +81,10 @@ public class PlayerController : MonoBehaviour
 
             canJump = Physics.OverlapSphere(groundCheckPoint.position, .25f, whatIsGround).Length > 0;
 
-            //if(canDoubleJump)
-            //{
-            //    canDoubleJump = false;
-            //}
+            if(doubleJump)
+            {
+                canDoubleJump = false;
+            }
 
             //Handle Jumping
             if (Input.GetKeyDown(KeyCode.Space) && canJump)
