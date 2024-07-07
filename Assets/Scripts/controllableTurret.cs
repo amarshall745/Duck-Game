@@ -78,6 +78,7 @@ public class controllableTurret : MonoBehaviour
 
         mounted = true;
 
+
     }
 
     public void unmount()
@@ -90,7 +91,11 @@ public class controllableTurret : MonoBehaviour
 
         player.transform.position = playerLocation;
         player.GetComponent<PlayerController>().offTurret();
+
+        barrelTransform.localRotation = Quaternion.identity;
+        barrelTransform.localPosition = new Vector3(0f,0.2f,0.5f);
     }
+    
 
     void fire(GameObject go)
     {
