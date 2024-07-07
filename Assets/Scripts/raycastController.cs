@@ -10,8 +10,8 @@ public class raycastController : MonoBehaviour
     private GameObject hitGO;
     private Vector3 hitPoint = Vector3.zero;
 
-    public GameObject spawnerGO, turretGO;
-    public bool spawner, turret;
+    public GameObject spawnerGO, turretGO, autoTurretGO;
+    public bool spawner, turret, autoTurret;
     // Update is called once per frame
     void Update()
     {
@@ -48,6 +48,11 @@ public class raycastController : MonoBehaviour
                     if (turret)
                     {
                         Instantiate(turretGO, hitPoint + new Vector3(0f, 0.5f, 0f), Quaternion.identity);
+                    }
+
+                    if (autoTurret)
+                    {
+                        Instantiate(autoTurretGO, hitPoint + new Vector3(0f, 1f, 0f), Quaternion.identity);
                     }
                 }
             }
