@@ -69,7 +69,16 @@ public class Gun : MonoBehaviour
     void fire(GameObject go)
     {
         rb  = go.GetComponent<Rigidbody>();
-        go.GetComponent<BulletController>().Countdown();
+
+        if (rocket == true)
+        {
+            go.GetComponent<rocketController>().Countdown();
+        }
+        else
+        {
+            go.GetComponent<BulletController>().Countdown();
+        }
         rb.velocity = go.transform.forward * PlayerPrefs.GetFloat("fireRange");
     }
 }
+ 
