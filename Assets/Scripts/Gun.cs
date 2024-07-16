@@ -14,6 +14,7 @@ public class Gun : MonoBehaviour
     public bool autoDuck;
     public bool canAutoFire;
     public bool rocket;
+    public bool machineGun;
 
     public int numOfDucks;
     [HideInInspector]
@@ -22,6 +23,8 @@ public class Gun : MonoBehaviour
     public Transform firePoint, firePoint2;
     private Rigidbody rb;
     public float zoomAmount;
+
+    public float inaccuracy = 0.1f;
 
     void Start()
     {
@@ -53,15 +56,22 @@ public class Gun : MonoBehaviour
 
     public void shoot()
     {
-       // Debug.Log("Shoot");
+        float randomX = Random.Range(-inaccuracy, inaccuracy);
+        float randomY = Random.Range(-inaccuracy, inaccuracy);
+        float randomZ = Random.Range(-inaccuracy, inaccuracy);
+
+        Quaternion inaccurateRotation = firePoint.rotation;// Quaternion.Euler(randomX, randomY, randomZ);
+
+        // Debug.Log("Shoot");
         if (PlayerPrefs.GetInt("doubleShot") >= 1)
         {
             fire(Instantiate(bullet, firePoint2.position, firePoint2.rotation));
         }
         if (PlayerPrefs.GetInt("doubleShot") >= 0)
         {
-            //Debug.Log("Fire bullet");
-            fire(Instantiate(bullet, firePoint.position, firePoint.rotation));
+            Debug.Log("Fire bullet");
+            if(machineGun)
+            fire(Instantiate(bullet, firePoint.position, inaccurateRotation));
         }
 
     }
